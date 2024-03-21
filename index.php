@@ -1,7 +1,17 @@
 <?php
 
-require "src/controllers/products.php";
+// parse the URL into the path without a query string
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-$controller = new Products;
+// separate the path into segments using the / delimiter
+$segments = explode('/', $path);
 
-$controller->index();
+// assign path segments to the $controller and $action variables
+$controller = $segments[1];
+$action = $segments[2];
+
+require "src/controllers/$controller.php";
+
+$controller_object = new $controller;
+
+$controller_object->$action();
